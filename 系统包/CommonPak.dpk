@@ -1,0 +1,112 @@
+package CommonPak;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  dbrtl,
+  adortl,
+  vcl,
+  dclado,
+  dxComnD7,
+  cxLibraryVCLD7,
+  dxThemeD7,
+  dxBarD7,
+  dxBarExtItemsD7,
+  dclusr,
+  dsnap,
+  vcljpg,
+  cxPageControlVCLD7,
+  cxEditorsVCLD7,
+  cxDataD7,
+  cxExtEditorsVCLD7,
+  cxGridD7,
+  fs7,
+  frx7,
+  dbexpress,
+  ibxpress,
+  teeui,
+  tee,
+  fsDB7,
+  frxTee7,
+  fsTee7,
+  frxIBX7,
+  fsIBX7,
+  frxDB7,
+  frxDBX7,
+  dxGDIPlusD7,
+  vcldb,
+  vclx,
+  cxExportVCLD7,
+  WinSkinD7R,
+  vclactnband,
+  dxSkinsCoreD7,
+  dxSkinscxPCPainterD7,
+  dxSkinsdxBarPainterD7,
+  dxSkinXmas2008BlueD7,
+  dxSkinBlackD7,
+  dxSkinBlueD7,
+  dxSkinCaramelD7,
+  dxSkinCoffeeD7,
+  dxSkinDarkRoomD7,
+  dxSkinDarkSideD7,
+  dxSkinFoggyD7,
+  dxSkinGlassOceansD7,
+  dxSkiniMaginaryD7,
+  dxSkinLilianD7,
+  dxSkinLiquidSkyD7,
+  dxSkinLondonLiquidSkyD7,
+  dxSkinMcSkinD7,
+  dxSkinMoneyTwinsD7,
+  dxSkinOffice2007BlackD7,
+  dxSkinOffice2007BlueD7,
+  dxSkinOffice2007GreenD7,
+  dxSkinOffice2007PinkD7,
+  dxSkinOffice2007SilverD7,
+  dxSkinOffice2010BlackD7,
+  dxSkinOffice2010BlueD7,
+  dxSkinOffice2010SilverD7,
+  dxSkinPumpkinD7,
+  dxSkinSevenD7,
+  dxSkinSharpD7,
+  dxSkinSilverD7,
+  dxSkinSpringTimeD7,
+  dxSkinStardustD7,
+  dxSkinSummer2008D7,
+  dxSkinValentineD7;
+
+contains
+  DataClass in 'DataClass.pas',
+  PublicClass in 'PublicClass.pas',
+  bainaADOQuery in 'bainaADOQuery.pas',
+  BaseFrom in 'BaseFrom.pas' {Base_Frm},
+  FindDataFrom in 'FindDataFrom.pas' {FindData_Frm},
+  ReportFrom in 'ReportFrom.pas' {Report_Frm},
+  SearchFrom in 'SearchFrom.pas' {Search_Frm},
+  BaseDataFrom in 'BaseDataFrom.pas' {BaseData_Frm},
+  SkinEQGrid in 'SkinEQGrid.pas',
+  IMECode in 'IMECode.pas';
+
+end.

@@ -1,0 +1,20 @@
+object cxPageControl1: TcxPageControl
+  Left = 158
+  Top = 47
+  Width = 785
+  Height = 552
+  Align = alClient
+  Color = clSilver
+  LookAndFeel.Kind = lfFlat
+  LookAndFeel.NativeStyle = False
+  ParentColor = False
+  PopupMenu = PopupMenu1
+  Style = 10
+  TabOrder = 4
+  TabSlants.Kind = skCutCorner
+  TabSlants.Positions = []
+  OnChange = cxPageControl1Change
+  ClientRectBottom = 552
+  ClientRectRight = 785
+  ClientRectTop = 0
+end

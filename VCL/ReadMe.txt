@@ -1,0 +1,1 @@
+必须先装好devcl52,才能安装系统包里的CommonPak.dpk

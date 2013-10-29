@@ -1,0 +1,1 @@
+devcl52.exe或devcl55s.exe.只要装其中一个,有些机子devcl52.exe安装会出错

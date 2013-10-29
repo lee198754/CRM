@@ -1,0 +1,34 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{aadb60be-e52a-427e-9539-35b0ec529d92}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Projects Include="WinSkinC2007.cbproj" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Default.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+  <BorlandProject xmlns=""> <Default.Personality> </Default.Personality> </BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Target Name="WinSkinC2007">
+    <MSBuild Projects="WinSkinC2007.cbproj" Targets="" />
+  </Target>
+  <Target Name="WinSkinC2007:Clean">
+    <MSBuild Projects="WinSkinC2007.cbproj" Targets="Clean" />
+  </Target>
+  <Target Name="WinSkinC2007:Make">
+    <MSBuild Projects="WinSkinC2007.cbproj" Targets="Make" />
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="WinSkinC2007" />
+  </Target>
+  <Target Name="Clean">
+    <CallTarget Targets="WinSkinC2007:Clean" />
+  </Target>
+  <Target Name="Make">
+    <CallTarget Targets="WinSkinC2007:Make" />
+  </Target>
+  <Import Condition="Exists('$(MSBuildBinPath)\Borland.Group.Targets')" Project="$(MSBuildBinPath)\Borland.Group.Targets" />
+</Project>

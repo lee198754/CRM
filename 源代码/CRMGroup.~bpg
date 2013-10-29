@@ -1,0 +1,33 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = CRM.exe CommonPak.bpl Product.exe cxSchedulerVCLD7.bpl \
+  dclcxSchedulerVCLD7.bpl
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+CRM.exe: CRM.dpr
+  $(DCC)
+
+CommonPak.bpl: ..\ÏµÍ³°ü\CommonPak.dpk
+  $(DCC)
+
+Product.exe: Product\Product.dpr
+  $(DCC)
+
+cxSchedulerVCLD7.bpl: C:\Program Files\DevExpress VCL\ExpressScheduler 2\Packages\cxSchedulerVCLD7.dpk
+  $(DCC)
+
+dclcxSchedulerVCLD7.bpl: C:\Program Files\DevExpress VCL\ExpressScheduler 2\Packages\dclcxSchedulerVCLD7.dpk
+  $(DCC)
+
+

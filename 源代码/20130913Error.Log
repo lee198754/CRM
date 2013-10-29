@@ -1,0 +1,33 @@
+Create By :超级用户 Created Datetime:16:34
+delete from ShareCust where ShareUserID:CustID
+
+Create By :超级用户 Created Datetime:16:56
+if not exists(select 1 from ShareCust where CustID=:CustID and ShareUserID=:ShareUserID)
+ insert into ShareCust (CustID,ShareUserID,ShareUserName,BelongID,CreateBy_,CreateD_,Memo)
+ Values (:CustID,:ShareUserID,:ShareUserName,:BelongID,:CreateBy_,:CreateD_,:Memo)
+
+Create By :超级用户 Created Datetime:16:58
+if not exists(select 1 from ShareCust where CustID=:CustID and ShareUserID=:ShareUserID)
+ insert into ShareCust (CustID,ShareUserID,ShareUserName,BelongID,CreateBy_,CreateD_,Memo)
+ Values (:CustID,:ShareUserID,:ShareUserName,:BelongID,:CreateBy_,:CreateD_,:Memo)
+
+Create By :超级用户 Created Datetime:16:59
+if not exists(select 1 from ShareCust where CustID=:CustID and ShareUserID=:ShareUserID)
+ insert into ShareCust (CustID,ShareUserID,ShareUserName,BelongID,CreateBy_,CreateD_,Memo)
+ Values (:CustID,:ShareUserID,:ShareUserName,:BelongID,:CreateBy_,:CreateD_,:Memo)
+
+Create By :超级用户 Created Datetime:16:05
+if not exists(select 1 from ShareCust where CustID=:CustID and ShareUserID=:ShareUserID)
+ insert into ShareCust (CustID,ShareUserID,ShareUserName,BelongID,CreateBy_,CreateD_,Memo)
+ Values (:CustID,:ShareUserID,:ShareUserName,:BelongID,:CreateBy_,:CreateD_,:Memo)
+
+Create By :超级用户 Created Datetime:16:14
+if not exists(select 1 from ShareCust where CustID=:CustID and ShareUserID=:ShareUserID)
+ insert into ShareCust (CustID,ShareUserID,ShareUserName,BelongID,CreateBy_,CreateD_,Memo)
+ Values (:CustID,:ShareUserID,:ShareUserName,:BelongID,:CreateBy_,:CreateD_,:Memo)
+
+Create By :超级用户 Created Datetime:17:44
+if not exists(select 1 from ShareCust where CustID=:CustID and ShareUserID=:ShareUserID)
+ insert into ShareCust (CustID,ShareUserID,ShareUserName,BelongID,CreateBy_,CreateD_,Memo)
+ Values (:CustID,:ShareUserID,:ShareUserName,:BelongID,:CreateBy_,:CreateD_,:Memo)
+

@@ -1,0 +1,340 @@
+Fast Report 问题集(1)   
+
+Fast Report 问题集
+
+nxyc_twz@163.com
+
+---------------- 使用自定义函数 ----------------------------------------
+
+Q: 我怎样添加我的自定义函数?
+A: 使用 TfrReport.OnUserFunction 事件. 这里有一个简单的例子:
+
+procedure TForm1.frReport1UserFunction(const Name: String;
+p1, p2, p3: Variant; var val: Variant);
+begin
+if AnsiCompareText('SUMTOSTR', Name) = 0 then
+val := My_Convertion_Routine(frParser.Calc(p1));
+end;
+
+然后，你就可以在报表（任何表达式或脚本）的任何地方使用 SumToStr 函数了。
+
+
+Q: 但是它仅仅能工作在一个TfrReport组件中。可我想在任何地方（在所有的TfrReport组件中）使用的我的自定义函数？
+A: 使 OnUserFunction event 句柄作为所有组件的公用句柄。如果你不能做到这一点，你需要创建函数库：
+
+type
+TMyFunctionLibrary = class(TfrFunctionLibrary)
+public
+constrUCtor Create; override;
+procedure DoFunction(FNo: Integer; p1, p2, p3: Variant;
+var val: Variant); override;
+end;
+
+constructor TMyFunctionLibrary.Create;
+begin
+inherited Create;
+with List do
+begin
+Add('DATETOSTR');
+Add('SUMTOSTR');
+end;
+end;
+
+procedure TMyFunctionLibrary.DoFunction(FNo: Integer; p1, p2, p3: Variant;
+var val: Variant);
+begin
+val := 0;
+case FNo of
+0: val := My_DateConvertion_Routine(frParser.Calc(p1));
+1: val := My_SumConvertion_Routine(frParser.Calc(p1));
+end;
+end;
+
+要注册函数库，调用
+frRegisterFunctionLibrary(TMyFunctionLibrary);
+要卸载函数库，调用
+frUnRegisterFunctionLibrary(TMyFunctionLibrary);
+
+
+Q: 我怎样将我的函数添加到函数列表中 (用表达式生成器)?
+A: 使用 frAddFunctionDesc 过程 (在FR_Class 单元中):
+
+frAddFunctionDesc(FuncLib, 'SUMTOSTR', 'My functions',
+'SUMTOSTR(<Number>)/Converts number to its verbal presentation.');
+
+注意: "/" 符号是必须的! 它从它的描述中分隔函数语法。
+FuncLib 被声明为你自己的函数库 (如果你不使用函数库可以将其设置为nil). 当函数库未注册时，所有它的函数将自动从函数列表中删除。
+
+
+---------------- 使用变量 -------------------------------------
+
+Q: 我怎样编程实现填充变量列表（在数据词典中）?
+
+A: 数据词典中的所有变量及分类都被存储在 TfrReport.Dictionary.Variables 中.
+
+
+ 
+Fast Report 问题集(2) 
+with frReport1.Dictionary do
+begin
+// 创建分类(名称用空白)
+Variables[' New category'] := '';
+// 创建变量
+Variables['New Variable'] := 'CustomerData.Customers."CustNo"';
+Variables['Another Variable'] := 'Page#';
+end;
+
+Q: 我定义了字符串变量:
+
+with frReport1.Dictionary do
+Variables['Month'] := 'March';
+
+但是当我运行报表是，出现了错误，为什么?
+
+A: 因为 FastReport 假定数据词典中的字符串变量值是一个表达式，它需要分析、计算它。
+可以使用其它的方法:
+
+with frReport1.Dictionary do
+Variables['Month'] := '''' + 'March' + '''';
+
+或者, 使用 frVariables 来传输固定数据到报表。
+
+
+Q: 我不想在数据词典中显示某些数据集？
+
+A: 使用 TfrReport.Dictionary.DisabledDatasets:
+
+with frReport1.Dictionary do
+begin
+// 关闭该数据集
+DisabledDatasets.Add('CustomerData.Bio');
+// 或者, 关闭整个数据模块/窗体
+DisabledDatasets.Add('CustomerData*');
+end;
+
+
+Q: 我怎样将数据传送到报表?
+
+A: 有几个方法可以实现它. 第一是使用全局对象 frVariables (在 FR_Class 单元中被定义):
+
+frVariables['My variable'] := 10;
+
+这段代码创建了一个名称为“My variable”，值为 10 的变量。这是最好的传输固定数据的报表的方法。
+
+第二种方法是使用 TfrReport.OnGetValue 事件. 这可以使用这个方法来传送动态数据、记录等。
+
+procedure TForm1.frReport1GetValue(ParName: String; var ParValue: Variant);
+begin
+if ParName = 'MyField' then
+ParValue := Table1MyField.Value;
+end;
+
+最后, 第三种方法是通过编程在数据词典中定义变量（可以参考以前的问题）:
+
+with frReport1.Dictionary do
+begin
+Variables['MyVariable'] := 'CustomerData.Customers."CustNo"';
+Variables['Another Variable'] := '10';
+end;
+
+
+Q: 我能在报表和程序间传送数据吗?
+A: 使用 frVariables 对象. 如果你在报表的任何对象的脚本中写入以下代码：
+
+MyVariable := 10
+
+那么，在你的程序中，你可以使用以下代码来获取 MyVariable 的值:
+v := frVariables['MyVariable'];
+
+
+---------------- 脚本 (FastReport Pascal) ---------------------------------
+
+Q: Band 中是否可以使用脚本?
+
+A: 当然. 选择 band ，然后按 Ctrl+Enter 或在对象浏览器中选择 "OnBeforePrint" 属性。
+
+Q: 报表页中是否可以使用脚本?
+
+A: 当然. 选择页 (在空白处单击) ，然后在对象浏览器中选择 "OnBeforePrint" 属性。如果该页是一个对话框窗体，那么这个属性就是  "OnActivate".
+
+
+Q: 我有两个对象: Memo1 和 Memo2. 我能否在 Memo1 的脚本中调用 Memo2 的属性和方法？
+
+A: 当然， 例如，你可以这样做： 对象名.属性名.
+
+
+ 
+Fast Report 问题集(3) 
+
+Q: 在脚本中，我可以使用对象的哪些属性?
+
+A: 几乎所有你能在对象浏览器中看到的属性。例如，可以使用 Font.Name, Font.Size等来存取字体属性。
+
+
+---------------- 其它问题 --------------------------------------------
+
+Q: 怎样改变多页报表中某一页的顺序?
+
+A: 拖动页标签到目的位置。
+
+
+Q: 我想查看所有的字段及变量，我想在报表中使用列表来实现它？
+
+A: 设置 TfrReport.MixVariablesAndDBFields := True.现在，所有的数据字段及变量可在“插入数据字段”对话框中可存取了。
+
+
+Q: 我不想显示导入选项对话框？
+
+A: 在导入组件（比如，TfrTextEXPort)中设置所有必需的选项，然后通过设置ShowDialog属性为False来关闭此对话框。
+
+
+Q: 为什么 TotalPages 变量不起作用? 它总是返回 0.
+
+A: 在你的报表中设置 Two-pass 选项. 要设置它，你需要在报表设计器的“文件”菜单中，打开“报表选项”对话框。
+
+
+Q: 我用BLOB字段来存储我的报表。当我运行报表设计器时，它显示我的报表未命名？
+
+A: 在运行报表设计器前，这样做:
+
+frReport1.FileName := 'Name of my report';
+
+
+Q: 我想在重新定义报表设计器中的“打开”及“保存”按钮的功能？
+
+
+A: 查看 TfrDesigner 组件. 它有几个必需的事件: OnLoadReport 和
+OnSaveReport. 这里有一小段代码例子:
+
+procedure TForm1.frDesigner1LoadReport(Report: TfrReport;
+var ReportName: String; var Opened: Boolean);
+begin
+with MyOpenDialog do
+begin
+Opened := ShowModal = mrOk;
+if Opened then
+begin
+Report.LoadFromBlobField(...);
+ReportName := ...;
+end;
+end;
+end;
+
+procedure TForm1.frDesigner1SaveReport(Report: TfrReport;
+var ReportName: String; SaveAs: Boolean; var Saved: Boolean);
+begin
+if SaveAs then
+with MySaveDialog do
+begin
+Saved := ShowModal = mrOk;
+if Saved then
+begin
+Report.SaveToBlobField(...);
+ReportName := ...;
+end;
+end
+else
+Report.SaveToBlobField(...);
+end;
+
+
+Q: 在 QR 中, 我可以写这样的代码： QRLabel1.Caption := 'Some text'. 我可以用FR这样做吗？
+
+A: FR 对象并不是一个组件 (这并不像 QR, RB). 但使用 TfrReport.FindObject 方法可以通过对象名称找到该对象。
+
+var
+t: TfrMemoView;
+begin
+t := TfrMemoView(frReport1.FindObject('Memo1'));
+if t <> nil then
+t.Memo.Text := 'FastReport';
+end;
+
+
+Q: 我想在用户预览（TfrPreview组件）中自定义热键？
+
+A: 这个组件有个窗口: TForm 属性. 将自定义句柄指定到 Window.OnKeyDown 属性.
+
+
+Fast Report 问题集(4) 
+Q: Fast Report 2.4 不能装载 FreeReport 2.21 文件？
+
+A: 这仅需要使用16进制数改变报表文件的第一字节，然后在源代码中修改下面的部分。在这些修改之后， 装载报表并保存它. 最后，返回到源代码处.
+
+FR_Class:
+
+function ReadString(Stream: TStream): String;
+begin
+{ if frVersion >= 23 then}
+Result := frReadString(Stream) {else
+Result := frReadString22(Stream);}
+end;
+
+procedure ReadMemo(Stream: TStream; Memo: TStrings);
+begin
+{ if frVersion >= 23 then}
+frReadMemo(Stream, Memo){ else
+frReadMemo22(Stream, Memo);}
+end;
+
+
+FR_Utils:
+
+procedure frReadMemo(Stream: TStream; l: TStrings);
+var
+s: String;
+b: Byte;
+n: Word;
+begin
+l.Clear;
+l.Text := frReadString(Stream); exit;
+Stream.Read(n, 2);
+if n > 0 then
+repeat
+Stream.Read(n, 2);
+SetLength(s, n);
+Stream.Read(s[1], n);
+l.Add(s);
+Stream.Read(b, 1);
+until b = 0
+else
+Stream.Read(b, 1);
+end;
+
+function frReadString(Stream: TStream): String;
+var
+s: String;
+n: Integer;
+b: Byte;
+begin
+Stream.Read(n, 4);
+SetLength(s, n);
+Stream.Read(s[1], n);
+if (n > 0) and (s[n] = #$0A) then
+SetLength(s, n - 2);
+// Stream.Read(b, 1);
+Result := s;
+end;
+
+
+Q: 怎样不在打印预览中打印报表？
+A: 这里有一段代码:
+
+frReport1.PrepareReport;
+frReport1.PrintPreparedReport('', 1, True, frAll);
+或
+frReport1.PrintPreparedReportDlg;
+
+
+Q: 我想在报表中旋转图片。问题是这张图片是由我的应用程序生成的。是否有方法可以在打印前将这幅图片装载到报表中？
+
+A: 使用 TfrReport.OnBeforePrint 事件:
+
+if View.Name = 'Picture1' then
+TfrPictureView(View).Picture.LoadFromFile(...) 或
+.Assign 或
+.你所想要做的任何事情
+
+
+
+
