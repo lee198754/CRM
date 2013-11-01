@@ -437,11 +437,13 @@ end;
 
 procedure TFrm_NewCust.SaveCustRecord;
 begin
+//---------lpj2013.09.13add-----------------------------------------------------
   if not DataBaseModule.IsCheckAdd then
   begin
     Application.MessageBox(PChar('现在客户数已经大于等于 '+IntToStr(c_ALLOWCOUNT)+' ,如需要继续添加客户请插入加密狗!'),'提示',MB_OK+MB_Iconwarning);
     Exit;
   end;
+//------------------------------------------------------------------------------
 
   IF ISAdd=True Then
     Begin

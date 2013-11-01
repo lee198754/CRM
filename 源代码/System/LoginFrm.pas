@@ -100,6 +100,9 @@ begin
     cxtxtdtpwd.SetFocus;
     Exit;
   End;
+
+
+//--------------------lpj2013.09.13add------------------------------------
   ADO_Rec := DataBaseModule.dtclsData.Query('Select Count(*)  Total From Customer');
   if Assigned(ADO_Rec) and (ADO_Rec.FieldByName('Total').AsInteger-5 < c_ALLOWCOUNT) then
   begin
@@ -109,11 +112,10 @@ begin
         Application.MessageBox(PChar('现在客户数为 '+IntToStr(ADO_Rec.RecordCount-5)+' 条 ,如果超过 '+IntToStr(c_ALLOWCOUNT)+' 条,则需要插入加密狗才能继续添加客户!'),'提示',MB_OK+MB_Iconwarning)
       else
         Application.MessageBox(PChar('现在客户数已经大于等于 '+IntToStr(c_ALLOWCOUNT)+' ,如需要继续添加客户请插入加密狗!'),'提示',MB_OK+MB_Iconwarning);
-
-
     end;
-    ADO_Rec.Free;
   end;
+//------------------------------------------------------------------------------
+
   Close;
 end;
 

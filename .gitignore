@@ -1,0 +1,7 @@
+﻿/源代码/*.~dpr
+/源代码/System/*.~pas
+/源代码/System/*.dcu
+/源代码/System/*.~ddp
+/源代码/System/*.~dfm
+/系统包/*.~dpk
+/源代码/output

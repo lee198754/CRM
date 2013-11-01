@@ -55,7 +55,7 @@ implementation
 uses
   uCheckKey;
 { TDataBaseModule }
-
+//--------------------lpj2013.09.13add------------------------------------
 function TDataBaseModule.IsCheckAdd: Boolean;
 var
   Query: TbainaADOQuery;
@@ -74,5 +74,6 @@ begin
   Query.Free;
   Result := True;
 end;
+//------------------------------------------------------------------------------
 
 end.
